@@ -1,0 +1,1 @@
+El acceso directo que se llama "Game", es el juego, pero en dado caso que no funcione, ingresa a la carpeta main.dist y busca el ejecutable main y abrelo
