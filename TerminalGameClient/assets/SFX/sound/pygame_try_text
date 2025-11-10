@@ -1,0 +1,183 @@
+
+
+
+"""
+FUNCIONES PARA LA MUSICA DEL JUEGO
+"""
+
+
+"""
+
+Musica De secciones
+"""
+"""
+TODO ESTO SOLO SIRVE PARA UNA INTERFAZ GRAFICA COMO GODOT
+pygame.init()
+pygame.mixer.init()
+
+# Definir rutas de música para cada sección
+mMenu = 'C:/Windows/Media/Sonidos para VIsualStudio/Menu.wav'
+mTienda = 'C:/Windows/Media/Sonidos para VIsualStudio/Tienda.wav'
+mMochila = 'C:/Windows/Media/Sonidos para VIsualStudio/Mochila.wav'
+mIntro = 'C:/Windows/Media/Sonidos para VIsualStudio/Intro.wav'
+mResultado = 'C:/Windows/Media/Sonidos para VIsualStudio/Resultado.wav'
+
+
+def cambiar_musica(ruta_musica):
+    # Detener la música actual
+    pygame.mixer.music.stop()
+    # Cargar la nueva música
+    pygame.mixer.music.load(ruta_musica)
+    # Reproducir la nueva música (loops=-1 para repetir indefinidamente)
+    pygame.mixer.music.play(loops=-1)
+    # Simulación de cambio de sección
+
+
+seccion_actual= 'seccion1'              # Esto se actualizará según la lógica del juego
+
+if seccion_actual == 'seccion1':
+    cambiar_musica(mMenu)
+elif seccion_actual == 'seccion2':
+    cambiar_musica(mTienda)
+elif seccion_actual == 'seccion3':
+    cambiar_musica(mMochila)
+elif seccion_actual == 'seccion4':
+    cambiar_musica(mResultado)
+elif seccion_actual == 'seccion5':
+    cambiar_musica(mIntro)
+
+# Mantén el juego corriendo para escuchar la música
+corriendo = True
+while corriendo:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            corriendo = False
+    time.sleep(0.1)  # Pausa
+
+# Finalizar Pygame
+pygame.quit()
+"""
+
+
+
+"""
+Sonidos
+"""
+"""
+def Sonidos():
+    # Inicializar el módulo de mezcla de sonido
+    pygame.mixer.init()
+
+    
+    # Configurar la música para que se reproduzca en bucle
+    pygame.mixer.music.play(loops=-1)  # loops=-1 hace que la música se repita indefinidamente
+
+    def sound(efecto):
+        efecto.play()
+
+    Ataque = pygame.mixer.Sound('C:/Windows/Media/Sonidos para VIsualStudio/ataque.wav')
+    Cortedimensional = pygame.mixer.Sound('C:/Windows/Media/Sonidos para VIsualStudio/cortedimensional.wav')
+    Punch = pygame.mixer.Sound('C:/Windows/Media/Sonidos para VIsualStudio/punch.wav')
+    Shuriken = pygame.mixer.Sound('C:/Windows/Media/Sonidos para VIsualStudio/shuriken.wav')
+    Paralizar = pygame.mixer.Sound('C:/Windows/Media/Sonidos para VIsualStudio/paralizar.wav')
+    Pocion = pygame.mixer.Sound('C:/Windows/Media/Sonidos para VIsualStudio/pocion.wav')
+"""
+
+"""
+pygame.init()
+pygame.mixer.init()
+
+# Configuración de la ventana
+ancho = 400
+alto = 300
+pantalla = pygame.display.set_mode((ancho, alto))
+pygame.display.set_caption("Interfaz Gráfica con Sonidos Simultáneos")
+
+# Cargar sonidos
+Shuriken = pygame.mixer.Sound('C:/Windows/Media/Sonidos para VIsualStudio/Shuriken.wav')
+Cortedimensional = pygame.mixer.Sound('C:/Windows/Media/Sonidos para VIsualStudio/CorteDimensional.wav')
+Paralizar = pygame.mixer.Sound('C:/Windows/Media/Sonidos para VIsualStudio/Paralizar.wav')
+Punch = pygame.mixer.Sound('C:/Windows/Media/Sonidos para VIsualStudio/Punch.wav')
+Atacar = pygame.mixer.Sound('C:/Windows/Media/Sonidos para VIsualStudio/Atacar.wav')
+
+# Función para reproducir sonidos
+def reproducir_sonidos():
+    Shuriken.play()
+    Atacar.play()
+    Paralizar.play()
+    Cortedimensional.play()
+    Punch.play()
+
+# Bucle principal del juego
+corriendo = True
+while corriendo:
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            corriendo = False
+        elif evento.type == pygame.KEYDOWN:
+            if evento.key == pygame.K_SPACE:  # Reproducir sonidos al presionar la barra espaciadora
+                reproducir_sonidos()
+
+    # Limpiar la pantalla
+    pantalla.fill((255, 255, 255))
+
+    # Dibujar texto en la pantalla
+    fuente = pygame.font.Font(None, 36)
+    texto = fuente.render("Presiona la barra espaciadora para reproducir sonidos", True, (0, 0, 0))
+    pantalla.blit(texto, (10, alto // 2))
+
+    # Actualizar pantalla
+    pygame.display.flip()
+
+# Finalizar Pygame
+pygame.quit()
+sys.exit()
+
+"""
+
+
+
+
+#reproducir musica asincronicamente con el programa
+"""
+winsound.PlaySound(r'C:\Windows\Media\Sonidos para VIsualStudio\Intro.wav', 
+                  winsound.SND_FILENAME | winsound.SND_ASYNC)
+"""
+
+
+#detener musica o sonido
+"""
+winsound.PlaySound(None, winsound.SND_PURGE)
+"""
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# COSAS A FUTURO QUE PIENSO CREAR
+
+"""
+Una tienda, que inicies con 100 de oro y puedas comprar pociones, y que en una variable mochila que sea tabla
+se guarden tus artefactos comprados, y que cada vez que quieras jugar de nuevo vayas ganando dinero, por ejemplo
+si gané y derroté a mi oponente por primera vez y quiero jugar de nuevo, iniciaria con lo que me quedó de dinero, +100
+
+las pociones serán de regeneración, de stamina, y de poder, tambien podriamos agregar pociones combinadas que sean mas caras.
+
+obviamente hacer que el oponente pueda usar pociones igual
+
+otra cosa que quiero agregar, son mas personajes, y mas golpes especiales
+"""
