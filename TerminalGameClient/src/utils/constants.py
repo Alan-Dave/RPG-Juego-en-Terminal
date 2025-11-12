@@ -1,6 +1,5 @@
 from utils.common import random
 from utils.commonChar import (Naruto, Sasuke, Ichigo, Aizen, Goku, Vegeta, Alhacen, Kazuha, Iori, Kyo)
-from core.opciones import elegir_Personaje
 
 class pocion():
     """
@@ -25,14 +24,4 @@ class pocion():
     Creo que seria mas practico usar una clase pocion, que sea padre, y luego hacer metodos y clases hijas, que serian las pociones de clase
     seria mas prudente practicar como meter las pociones con clase padre en un archivo duplicado para no dañar el codigo principal
     """
- 
 
-oponente = random.choice([
-                Naruto("Naruto"), Sasuke("Sasuke"), Ichigo("Ichigo"),
-                Kyo("Kyo"), Iori("Iori"), Kazuha("Kazuha"), Alhacen("Alhacen"), Vegeta("Vegeta"), Goku("Goku")
-            ])
-
-jugador = elegir_Personaje()
-
-vida_maxima_o = oponente.vida
-vida_maxima_j = jugador.vida

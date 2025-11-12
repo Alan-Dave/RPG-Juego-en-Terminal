@@ -3,5 +3,6 @@ from characters.Models.dbzModels import (Goku, Vegeta)
 from characters.Models.narutoModels import (Naruto, Sasuke)
 from characters.Models.kofModels import (Iori, Kyo)
 from characters.Models.genshinModels import (Alhacen, Kazuha)
-
+from characters.Models.oponenteModel import (Oponente)
+from characters.Models.BaseModel import (Personaje)
 

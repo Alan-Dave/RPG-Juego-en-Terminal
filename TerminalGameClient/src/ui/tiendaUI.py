@@ -1,9 +1,7 @@
 from utils.common import os, time
 
 
-def Tienda():
-    global producto
-    
+def Tienda(jugador):
     os.system("cls")
     print("\033[32m********** TIENDA ***********\033[0m\n")
 
@@ -80,12 +78,10 @@ def Tienda():
                 jugador.moneda -= pocion.Pocion_SS_Precio
                 return Tienda()
     elif opcion_1 == 2:
-        from TerminalGameClient.src.core.sound import sound
+        from core.sound import sound
         sound.sSalirTienda()
-        from sections.menu import menu
-        return menu()
     else:
-        from TerminalGameClient.src.core.sound import sound
+        from core.sound import sound
         sound.sError()
         print("\033[31mOpcion Invalida, Ingrese nuevamente\033[0m")
         time.sleep(2)
@@ -95,7 +91,7 @@ def Tienda():
     # INSTALAR INTELLICODE EN EXTENSIONES DE VS
 
 def moneyComprobator():
-    from TerminalGameClient.src.core.sound import sound
+    from core.sound import sound
     global producto
     if producto in range(1, 4):
         if jugador.moneda > pocion.Pocion_B_Precio:

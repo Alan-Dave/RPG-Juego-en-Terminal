@@ -5,62 +5,84 @@ class NarutoS(Personaje):
         super().__init__(nombre, vida, poder, stamina, tipo)
 
 class Naruto(NarutoS):
-    def __init__(self, nombre):
-        super().__init__(nombre, vida=270, poder=250, stamina=350, tipo='Viento')  # Naruto tiene alta vida y stamina, con buen poder
+    def __init__(self):
+        super().__init__(nombre='Naruto', vida=270, poder=250, stamina=350, tipo='Viento')  # Naruto tiene alta vida y stamina, con buen poder
 
-    def Rasengan(self):
+    def Rasengan(self, rival):
+        ataque = 'Rasengan'
         if self.stamina < 60:
-            return {'ok': False, 'error': 'Sin stamina', 'ataque': 'Rasengan'}
+            return {
+                'ok': False, 
+                'ataque': 'Rasengan', 
+                'dano': 0,
+                'tipo': 'Rasengan',
+                'msg': 'No tienes suficiente stamina', }
         
         self.stamina -= 60
         dano = self.poder // 4
+        ataque = 'Rasengan'
+        tipo = 'Rasengan'
+        rival.vida -= dano
         return {
             'ok': True,
-            'ataque': 'Rasengan',
+            'ataque': ataque,
             'dano': dano,
-            'tipo': 'Rasengan',
+            'tipo': tipo,
+            'msg': f'{self.nombre} ha realizado {ataque} y hace {dano} de daño a {rival.nombre}'
         }
        
                 
-    def RasenShuriken(self):
+    def RasenShuriken(self, rival):
+        ataque = 'RasenShuriken'
         if self.stamina < 150:
-            return {'ok': False, 'error': 'Sin stamina', 'ataque': 'RasenShuriken'}
+            return {'ok': False, 'ataque': ataque, 'dano': 0, 'tipo': 'RasenShuriken', 'msg': 'No tienes suficiente stamina'}
         
         self.stamina -= 150
         dano = self.poder // 2
+        tipo = 'RasenShuriken'
+        rival.vida -= dano
         return {
             'ok': True,
-            'ataque': 'RasenShuriken',
+            'ataque': ataque,
             'dano': dano,
-            'tipo': 'RasenShuriken',
+            'tipo': tipo,
+            'msg': f'{self.nombre} ha realizado {ataque} y hace {dano} de daño a {rival.nombre}',
         }
     
 class Sasuke(NarutoS):
-    def __init__(self, nombre):
-        super().__init__(nombre, vida=230, poder=280, stamina=270, tipo='Fuego')  # Sasuke tiene mayor poder pero menos vida
+    def __init__(self):
+        super().__init__(nombre='Sasuke', vida=230, poder=280, stamina=270, tipo='Fuego')  # Sasuke tiene mayor poder pero menos vida
     
-    def Chidori(self):
+    def Chidori(self, rival):
+        ataque = 'Chidori'
         if self.stamina < 60:
-            return {'ok': False, 'error': 'Sin stamina', 'ataque': 'Chidori'}
+            return {'ok': False, 'ataque': ataque, 'dano': 0, 'tipo': 'Chidori', 'msg': 'No tienes suficiente stamina'}
         
         self.stamina -= 60
         dano = self.poder // 5
+        tipo = 'Chidori'
+        rival.vida -= dano
         return {
             'ok': True,
-            'ataque': 'Chidori',
+            'ataque': ataque,
             'dano': dano,
-            'tipo': 'Chidori',
+            'tipo': tipo,
+            'msg': f'{self.nombre} ha realizado {ataque} y hace {dano} de daño a {rival.nombre}',
         }
     
-    def Raikiri(self):
+    def Raikiri(self, rival):
+        ataque = 'Raikiri'
         if self.stamina < 60:
-            return {'ok': False, 'error': 'Sin stamina', 'ataque': 'Raikiri'}
+            return {'ok': False, 'ataque': ataque, 'dano': 0, 'tipo': 'Raikiri', 'msg': 'No tienes suficiente stamina'}
         
         self.stamina -= 150
         dano = self.poder // 2
+        tipo = 'Raikiri'
+        rival.vida -= dano
         return {
             'ok': True, 
-            'ataque': 'Raikiri',
+            'ataque': ataque,
             'dano': dano,
-            'tipo': 'Raikiri',
+            'tipo': tipo,
+            'msg': f'{self.nombre} ha realizado {ataque} y hace {dano} de daño a {rival.nombre}',
         }

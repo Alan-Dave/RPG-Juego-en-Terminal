@@ -111,3 +111,18 @@ SOUNDS_MAP = {
         'try_esquivar': sound.sAizenTE,
     },
 }
+
+
+UI_MAP = {
+    'intro': sound.sIntro,
+    'error': sound.sError,
+    'esperar': sound.sEsperar,
+    'estado': sound.sEstado,
+    'game_over': sound.sGameOver,
+    'mochila': sound.sMochila,
+    'money': sound.sMoney,
+    'pocion': sound.sPocion,
+    'salir_tienda': sound.sSalirTienda,
+    'tienda': sound.sTienda,
+    'win': sound.sWin,
+}

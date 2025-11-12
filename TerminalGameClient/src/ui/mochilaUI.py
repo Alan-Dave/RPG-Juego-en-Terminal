@@ -3,7 +3,7 @@ from core.sound import sound
 
 def Mochila():
     from utils.constants import jugador
-    global cual_usar
+
     os.system("cls")
     sound.sMochila()
     print("\033[32m********** MOCHILA ***********\033[0m\n")
@@ -13,6 +13,7 @@ def Mochila():
     print("-----------------------------------------------")
     print("1. SI\n"
           "2. NO")
+    
     usar = int(input("\n¿Deseas usar un producto? "))
     print("")
     if usar == 1:
@@ -104,4 +105,3 @@ def inventory():
 
 
 
-Mochila()

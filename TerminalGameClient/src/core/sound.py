@@ -16,21 +16,36 @@ def reproducir_sonido(nombre_sonido):
 # Obtén el directorio del script actual
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Carpeta principal donde están los sonidos
-sound_dir = os.path.join(script_dir, 'sound')
+# Subimos hasta la raíz del paquete TerminalGameClient y buscamos assets/SFX
+project_root = os.path.abspath(os.path.join(script_dir, '..', '..'))
+sfx_root = os.path.join(project_root, 'assets', 'SFX')
+
+# Carpetas a buscar dentro de SFX (ordenadas por prioridad)
+candidate_subdirs = ['sound', 'effects', 'ui']
 
 # Inicializa el diccionario de sonidos
 sonidos = {}
-# Recorre todas las subcarpetas dentro de la carpeta 'sound'
-for root, dirs, files in os.walk(sound_dir):
-    for file in files:
-        if file.endswith('.wav'):  # Verifica que el archivo sea un archivo de sonido
-            # Obtiene la ruta completa del archivo de sonido
-            full_path = os.path.join(root, file)
-            # Utiliza el nombre del archivo sin la extensión como la clave del diccionario
-            sound_name = os.path.splitext(file)[0]
-            sonidos[sound_name] = full_path
-            print(f"Sonido detectado: {sound_name} -> {full_path}")
+
+found_dirs = []
+for sub in candidate_subdirs:
+    d = os.path.join(sfx_root, sub)
+    if os.path.isdir(d):
+        found_dirs.append(d)
+
+if not found_dirs:
+    print(f"[!] No se encontraron directorios de sonido en: {sfx_root}")
+else:
+    for sd in found_dirs:
+        print(f"Buscando sonidos en: {sd}")
+        for root, dirs, files in os.walk(sd):
+            for file in files:
+                if file.lower().endswith('.wav'):
+                    full_path = os.path.join(root, file)
+                    sound_name = os.path.splitext(file)[0]
+                    # Si hay duplicados, preservamos el primero encontrado
+                    if sound_name not in sonidos:
+                        sonidos[sound_name] = full_path
+                        print(f"Sonido detectado: {sound_name} -> {full_path}")
             
 
 
@@ -369,28 +384,43 @@ class sound():
     def sAizenNE():
         reproducir_sonido('sAizenNE')
 
+    @staticmethod
     def sAizenTE():
         reproducir_sonido('sAizenTE')
-
+    @staticmethod
     def sIchigoTE():
         reproducir_sonido('sIchigoTE')
     
+    @staticmethod
     def sNarutoTE():
         reproducir_sonido('sNarutoTE')
     
+    @staticmethod
     def sSasukeTE():
         reproducir_sonido('sSasukeTE')
     
+    @staticmethod
     def sAlhacenTE():
         reproducir_sonido('sAlhacenTE')
     
+    @staticmethod
     def sKazuhaTE():
         reproducir_sonido('sKazuhaTE')
         
     def sVegetaTE():
         reproducir_sonido('sVegetaTE')
     
+    def sGokuTE():
+        reproducir_sonido('sGokuTE')
+
+    @staticmethod
+    def sNarutoE():
+        reproducir_sonido('sNarutoE')
     
+    def sSasukeE():
+        reproducir_sonido('sSasukeE')
+
+   
 
     # INTENTA ESQUIVAR
     @staticmethod

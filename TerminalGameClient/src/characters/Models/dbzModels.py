@@ -5,66 +5,106 @@ class DBZ(Personaje):
         super().__init__(nombre, vida, poder, stamina, tipo)
                          
 class Goku(DBZ):
-    def __init__(self, nombre):
-        super().__init__(nombre, vida=250, poder=300, stamina=320, tipo='Saiyajin')  # Goku tiene estadísticas superiores en todo
+    def __init__(self):
+        super().__init__(nombre='Goku', vida=250, poder=300, stamina=320, tipo='Saiyajin')  # Goku tiene estadísticas superiores en todo
 
-    def Kamehameha(self):
+    def Kamehameha(self, rival):
+        ataque = 'Kamehameha'
         if self.stamina < 130:
-            return {'ok': False, 'error': 'Sin stamina', 'ataque': 'Kamehameha'}
+            return {
+                'ok': False,
+                'ataque': ataque,
+                'dano': 0,
+                'tipo': 'Saiyajin',
+                'msg': 'No tienes suficiente stamina',
+            }
 
         self.stamina -= 30
         dano = self.poder // 2
+        tipo = 'Saiyajin'
+        rival.vida -= dano
         return {
             'ok': True,
-            'ataque': 'Kamehameha',
+            'ataque': ataque,
             'dano': dano,
-            'tipo': 'Saiyajin',
+            'tipo': tipo,
+            'msg': f'{self.nombre} ha realizado {ataque} y hace {dano} de daño a {rival.nombre}',
         }
 
-    def Ssj(self):
-        if self.stamin < 150:
-            return {'ok': False, 'error': 'Sin stamina', 'ataque': 'Ssj'}
+    def Ssj(self, rival):
+        ataque = 'Super Saiyajin'
+        if self.stamina < 150:
+            return {
+                'ok': False,
+                'ataque': ataque,
+                'dano': 0,
+                'tipo': 'Transformación',
+                'msg': 'No tienes suficiente stamina',
+            }
 
         self.stamina -= 150
-        dano = self.poder // 2
+        self.vida += 100
+        self.stamina += 100
+        self.poder += 100
+        tipo = 'Transformación'
         return {
             'ok': True,
-            'ataque': 'Ssj',
-            'dano': dano,
-            'tipo': 'Saiyajin',
+            'ataque': ataque,
+            'dano': 0,
+            'tipo': tipo,
+            'msg': f'{self.nombre} se ha transformado en {ataque} y aumenta sus estadisticas',
         }
 
 class Vegeta(DBZ):
-    def __init__(self, nombre):
-        super().__init__(nombre, vida=240, poder=290, stamina=310, tipo='Saiyajin')  # Vegeta es similar a Goku, pero ligeramente más débil
+    def __init__(self):
+        super().__init__(nombre='Vegeta', vida=240, poder=290, stamina=310, tipo='Saiyajin')  # Vegeta es similar a Goku, pero ligeramente más débil
     
-    def Ssj(self):
-
-        if self.stamin < 150:
-            return {'ok': False, 'error': 'Sin stamina', 'ataque': 'Ssj'}
+    def Ssj(self, rival):
+        ataque = 'Super Saiyajin'
+        if self.stamina < 150:
+            return {
+                'ok': False,
+                'ataque': ataque,
+                'dano': 0,
+                'tipo': 'Transformación',
+                'msg': 'No tienes suficiente stamina',
+            }
 
         self.stamina -= 150
-        dano = self.poder // 2
+        self.vida += 100
+        self.stamina += 100
+        self.poder += 100
+        tipo = 'Transformación'
         return {
             'ok': True,
-            'ataque': 'Ssj',
-            'dano': dano,
-            'tipo': 'Saiyajin',
+            'ataque': ataque,
+            'dano': 0,
+            'tipo': tipo,
+            'msg': f'{self.nombre} se ha transformado en {ataque} y aumenta sus estadisticas',
         }
                 
 
-    def GarlickGun(self):
-
+    def GarlickGun(self, rival):
+        ataque = 'Garlick Gun'
         if self.stamina < 130:
-            return {'ok': False, 'error': 'Sin stamina', 'ataque': 'Kamehameha'}
+            return {
+                'ok': False,
+                'ataque': ataque,
+                'dano': 0,
+                'tipo': 'Combo',
+                'msg': 'No tienes suficiente stamina',
+            }
 
         self.stamina -= 30
         dano = self.poder // 2
+        tipo = 'Combo'
+        rival.vida -= dano
         return {
             'ok': True,
-            'ataque': 'Garlick Gun',
+            'ataque': ataque,
             'dano': dano,
-            'tipo': 'Saiyajin',
+            'tipo': tipo,
+            'msg': f'{self.nombre} ha realizado {ataque} y hace {dano} de daño a {rival.nombre}',
         }
 
 

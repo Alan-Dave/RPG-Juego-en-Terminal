@@ -5,63 +5,102 @@ class Bleach(Personaje):
         super().__init__(nombre, vida, poder, stamina, tipo)
 
 class Ichigo(Bleach):
-    def __init__(self, nombre):
-        super().__init__(nombre, vida=180, poder=250, stamina=200, tipo='Segador')
+    def __init__(self):
+        super().__init__(nombre='Ichigo', vida=180, poder=250, stamina=200, tipo='Segador')
 
-    def getsuga(self):
+    def getsuga(self, rival):
+        ataque = 'Getsuga Tensho'
         if self.stamina < 50:
-            return {"ok": False, "error": "Sin stamina", "ataque": "Getsuga Tensho"}
+            return {
+                'ok': False,
+                'ataque': ataque,
+                'dano': 0,
+                'tipo': 'espiritual',
+                'msg': 'No tienes suficiente stamina',
+            }
 
         self.stamina -= 50
         dano = self.poder // 5
+        tipo = 'espiritual'
+        rival.vida -= dano
         return {
-            "ok": True,
-            "ataque": "Getsuga Tensho",
-            "dano": dano,
-            "tipo": "espiritual",
+            'ok': True,
+            'ataque': ataque,
+            'dano': dano,
+            'tipo': tipo,
+            'msg': f'{self.nombre} ha realizado {ataque} y hace {dano} de daño a {rival.nombre}',
         }
 
-    def bankai(self):
+    def bankai(self, rival):
+        ataque = 'Bankai'
         if self.stamina < 150:
-            return {"ok": False, "error": "Sin stamina", "ataque": "Bankai"}
+            return {
+                'ok': False,
+                'ataque': ataque,
+                'dano': 0,
+                'tipo': 'Transformacion',
+                'msg': 'No tienes suficiente stamina',
+            }
 
         self.stamina -= 150
         self.vida += 100
         self.stamina += 100
         self.poder += 100
+        tipo = 'Transformación'
         return {
-            "ok": True,
-            "ataque": "Bankai",
-            "efecto": "+100 vida, stamina y poder",
-            "tipo": "transformacion",
+            'ok': True,
+            'ataque': ataque,
+            'dano': 0,
+            'tipo': tipo,
+            'msg': f'{self.nombre} se ha transformado en {ataque} y aumenta sus estadisticas',
         }
 
 class Aizen(Bleach):
-    def __init__(self, nombre):
-        super().__init__(nombre, vida=200, poder=260, stamina=180, tipo='Segador')
+    def __init__(self):
+        super().__init__(nombre='Aizen', vida=200, poder=260, stamina=180, tipo='Segador')
 
-    def kyokasuigetsu(self):
+    def kyokasuigetsu(self, rival):
+        ataque = 'Kyokasuigetsu'
         if self.stamina < 130:
-            return {"ok": False, "error": "Sin stamina", "ataque": "Kyokasuigetsu"}
+            return {
+                'ok': False,
+                'ataque': ataque,
+                'dano': 0,
+                'tipo': 'ilusion',
+                'msg': 'No tienes suficiente stamina',
+            }
 
         self.stamina -= 30
         dano = self.poder // 2
+        tipo = 'ilusion'
+        rival.vida -= dano
         return {
-            "ok": True,
-            "ataque": "Kyokasuigetsu",
-            "dano": dano,
-            "tipo": "ilusion",
+            'ok': True,
+            'ataque': ataque,
+            'dano': dano,
+            'tipo': tipo,
+            'msg': f'{self.nombre} ha realizado {ataque} y hace {dano} de daño a {rival.nombre}',
         }
 
-    def kido(self):
+    def kido(self, rival):
+        ataque = 'Kido Avanzado'
         if self.stamina < 130:
-            return {"ok": False, "error": "Sin stamina", "ataque": "Kido Avanzado"}
+            return {
+                'ok': False,
+                'ataque': ataque,
+                'dano': 0,
+                'tipo': 'magia',
+                'msg': 'No tienes suficiente stamina',
+            }
 
         self.stamina -= 30
         dano = self.poder // 2
+        tipo = 'magia'
+        rival.vida -= dano
         return {
-            "ok": True,
-            "ataque": "Kido Avanzado",
-            "dano": dano,
-            "tipo": "magia",
+            'ok': True,
+            'ataque': ataque,
+            'dano': dano,
+            'tipo': tipo,
+            'msg': f'{self.nombre} ha realizado {ataque} y hace {dano} de daño a {rival.nombre}',
         }

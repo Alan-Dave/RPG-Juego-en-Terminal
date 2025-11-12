@@ -1,145 +1,164 @@
 from utils.common import os, time
+from utils.colors import Color
+from core.sound import sound
+from .sound_dispatcher import SOUNDS_MAP
    
 # _______________________________________________________________________
-def combos():
-    from utils.constants import jugador, oponente
-    from utils.commonChar import Naruto, Sasuke, Ichigo, Aizen, Kyo, Iori, Kazuha, Alhacen, Goku, Vegeta, John
-
+def combos(self, rival):
     # Mapeo de (tipo, nombre) → acción especial
     acciones_combo = {
-        ("NarutoS", "Naruto"): lambda j: Naruto.Rasengan(self=j),
-        ("NarutoS", "Sasuke"): lambda j: Sasuke.Chidori(self=j),
-
-        ("Bleach", "Ichigo"): lambda j: Ichigo.Getsuga(self=j),
-        ("Bleach", "Aizen"): lambda j: Aizen.A_kido(self=j),
-
-        ("DBZ", "Goku"): lambda j: Goku.Kamehameha(self=j),
-        ("DBZ", "Vegeta"): lambda j: Vegeta.GarlickGun(self=j),
-
-        ("Genshin", "Kazuha"): lambda j: Kazuha.K_elemental(self=j),
-        ("Genshin", "Alhacen"): lambda j: Alhacen.A_elemental(self=j),
-
-        ("Kof", "Iori"): lambda j: Iori.Iori_1(self=j),
-        ("Kof", "Kyo"): lambda j: Kyo.Kyo_1(self=j),
-    }
-
-    # Buscar acción por tipo y nombre
-    accion = acciones_combo.get((jugador.tipo, jugador.nombre)) or \
-             acciones_combo.get((jugador.tipo, None))
+    'Naruto': {
+        'rasengan': lambda rival: self.Rasengan(rival),
+    },
+    'Sasuke': {
+        'chidori': lambda rival: self.Chidori(rival),
+    },
+    'Ichigo': {
+        'getsuga': lambda rival: self.getsuga(rival),
+    },
+    'Aizen': {
+        'kido': lambda rival: self.kido(rival),
+    },
+    'Kyo': {
+        'kyo_1': lambda rival: self.combo(rival),
+    },
+    'Iori': {
+        'iori_1': lambda rival: self.combo(rival),
+    },
+    'Kazuha': {
+        'k_elemental': lambda rival: self.K_elemental(rival),
+    },
+    'Alhacen': {
+        'a_elemental': lambda rival: self.A_elemental(rival),
+    },
+    'Goku': {
+        'kamehameha': lambda rival: self.Kamehameha(rival),
+    },
+    'Vegeta': {
+        'garlick_gun': lambda rival: self.GarlickGun(rival),
+    },
+}
+    accion = list(acciones_combo.get(self.nombre, {}).values())
 
     if accion:
-        ejecutar_accion(accion)
+        return accion[0](rival)
     else:
-        print("⚠️ No hay combo definido para este personaje.")
+        print(f"⚠️ No hay un combo definido para {self.nombre}.")
 
-def ejecutar_accion(accion):
-    """Ejecuta una acción estándar con su secuencia de comprobaciones."""
-    from core.eventos import comprobar
-    print("-------------------------------------")
-    accion(jugador)
-    print("")
-    comprobar()
-    if hasattr(oponente, "elegir_accion"):
-        oponente.elegir_accion()
-        comprobar()
+
+    
     
 
-def especiales():
-    from core.eventos import comprobar
-
-    # Mapeo de (tipo, nombre) → ataque especial
-    acciones_especiales = {
-        ("NarutoS", "Naruto"): lambda j: Naruto.RasenShuriken(self=j),
-        ("NarutoS", "Sasuke"): lambda j: Sasuke.Raikiri(self=j),
-
-        ("Bleach", "Ichigo"): lambda j: Ichigo.Bankai(self=j),
-        ("Bleach", "Aizen"): lambda j: Aizen.Kyokasuigetsu(self=j),
-
-        ("DBZ", "Goku"): lambda j: Goku.Ssj(self=j),
-        ("DBZ", "Vegeta"): lambda j: Vegeta.Ssj(self=j),
-
-        ("Genshin", "Kazuha"): lambda j: Kazuha.K_ulti(self=j),
-        ("Genshin", "Alhacen"): lambda j: Alhacen.A_ulti(self=j),
-
-        ("Kof", "Iori"): lambda j: Iori.Iori_2(self=j),
-        ("Kof", "Kyo"): lambda j: Kyo.Kyo_2(self=j),
-    }
-
-    # Buscar acción por tipo y nombre
-    accion = acciones_especiales.get((jugador.tipo, jugador.nombre)) or \
-             acciones_especiales.get((jugador.tipo, None))
+def especiales(self, rival):
+    # Mapeo de (tipo, nombre) → acción especial
+    acciones_combo = {
+    'Naruto': {
+        'rasengan': lambda rival: self.RasenShuriken(rival),
+    },
+    'Sasuke': {
+        'chidori': lambda rival: self.Raikiri(rival),
+    },
+    'Ichigo': {
+        'getsuga': lambda rival: self.bankai(rival),
+    },
+    'Aizen': {
+        'kido': lambda rival: self.kyokasuigetsu(rival),
+    },
+    'Kyo': {
+        'kyo_1': lambda rival: self.ulti(rival),
+    },
+    'Iori': {
+        'iori_1': lambda rival: self.ulti(rival),
+    },
+    'Kazuha': {
+        'k_elemental': lambda rival: self.K_ulti(rival),
+    },
+    'Alhacen': {
+        'a_elemental': lambda rival: self.A_ulti(rival),
+    },
+    'Goku': {
+        'kamehameha': lambda rival: self.Ssj(rival),
+    },
+    'Vegeta': {
+        'garlick_gun': lambda rival: self.Ssj(rival),
+    },
+}
+    accion = list(acciones_combo.get(self.nombre, {}).values())
 
     if accion:
-        ejecutar_accion(accion)
+        return accion[0](rival)
     else:
-        print("⚠️ No hay ataque especial definido para este personaje.")
+        print(f"⚠️ No hay un combo definido para {self.nombre}.")
 
-def resultado(nombre):
-    from utils.constants import jugador, oponente
-    from core.sound import sound
+
+
+
+
+def resultado(jugador_nombre, oponente_nombre, jugador_vida, oponente_vida):
     os.system("cls")
     print("El ganador de esta reñida pelea es..")
     time.sleep(2)
-    if (oponente.vida <= 0 and jugador.vida > 0) or (oponente.vida > 0 and jugador.vida <= 0):
-        print(f"\n\033[32m[!{jugador.nombre if jugador.vida > 0 else oponente.nombre}¡]\033[0m\n")   #<---------------------------- este texto es verde
-        sonido_win(nombre)
+    jugador_gana = oponente_vida <= 0 and jugador_vida > 0
+    oponente_gana = oponente_vida > 0 and jugador_vida <= 0
+
+    if jugador_gana or oponente_gana:
+        print(f"\n\033[32m[!{jugador_nombre if jugador_gana else oponente_nombre}¡]\033[0m\n")   #<---------------------------- este texto es verde
+        sonido_win(jugador_nombre if jugador_gana else oponente_nombre)
         time.sleep(2.5)
-        sound.sWin()
-    elif jugador.vida <= 0:
-        print(f"\n\033[38;5;208m[!{oponente.nombre}¡]\033[0m\n")  #<---------------------------- este texto es naranjo
-        sonido_win(nombre)
-        time.sleep(2.5)
-        sound.sDerrota()
+        return True if jugador_gana else False
+
         
         
-    print("\033[33mGracias por jugar\033[0m") # estos textos son amarillos
-    print("-----------------------------------")
-    print("\033[33mJuego terminado\033[0m")
-    time.sleep(2.5)
-    eleccion_c()
+    
 
-class R():
-    def PuntoR():
-        from utils.constants import jugador, oponente
-        oponente_r = 0
-        oponente_r = oponente.vida
+class R:
+    
+    oponente_r = 0
+    oponente_s = 0
+    jugador_r = 0
+    jugador_s = 0
 
-        oponente_s = 0
-        oponente_s = oponente.stamina
+    @classmethod
+    def PuntoR(cls, jugador, oponente):
+        
+        cls.oponente_r = oponente.vida
+        cls.oponente_s = oponente.stamina
+        cls.jugador_r = jugador.vida
+        cls.jugador_s = jugador.stamina
 
-        jugador_r = 0
-        jugador_r = jugador.vida
+        
+    def vida_maxima(jugador, oponente):
 
-        jugador_s = 0
-        jugador_s = jugador.stamina
+        vida_maxima_j = jugador.vida
+        vida_maxima_o = oponente.vida
 
-    def Reset():
-        from utils.constants import jugador, oponente
-        oponente.vida = oponente_r
-        oponente.stamina = oponente_s
+        return vida_maxima_j, vida_maxima_o
 
-        jugador.vida = jugador_r
-        jugador.stamina = jugador_s
-
-        jugador.moneda += jugador.moneda + 100
-        oponente.moneda += oponente.moneda + 100
+    @classmethod
+    def Reset(cls, jugador, oponente):
+        
+        oponente.vida = cls.oponente_r
+        oponente.stamina = cls.oponente_s
+        jugador.vida = cls.jugador_r
+        jugador.stamina = cls.jugador_s
+        jugador.moneda += 100
+        oponente.moneda += 100
 
 
 
 def sonido_win(nombre):
-    from sound_dispatcher import SOUNDS_MAP
 
     tipos = {
         'Naruto': SOUNDS_MAP['Naruto']['win'],
-        'Sasuke': SOUNDS_MAP['Naruto']['win'],
-        'Ichigo': SOUNDS_MAP['Bleach']['win'],
-        'Aizen': SOUNDS_MAP['Bleach']['win'],
-        'Goku': SOUNDS_MAP['DBZ']['win'],
-        'Vegeta': SOUNDS_MAP['DBZ']['win'],
-        'Kazuha': SOUNDS_MAP['Genshin']['win'],
-        'Alhacen': SOUNDS_MAP['Genshin']['win'],
-        'Iori': SOUNDS_MAP['Kof']['win'],
-        'Kyo': SOUNDS_MAP['Kof']['win'],
+        'Sasuke': SOUNDS_MAP['Sasuke']['win'],
+        'Ichigo': SOUNDS_MAP['Ichigo']['win'],
+        'Aizen': SOUNDS_MAP['Aizen']['win'],
+        'Goku': SOUNDS_MAP['Goku']['win'],
+        'Vegeta': SOUNDS_MAP['Vegeta']['win'],
+        'Kazuha': SOUNDS_MAP['Kazuha']['win'],
+        'Alhacen': SOUNDS_MAP['Alhacen']['win'],
+        'Iori': SOUNDS_MAP['Iori']['win'],
+        'Kyo': SOUNDS_MAP['Kyo']['win'],
     }
 
     if nombre in tipos:
@@ -149,17 +168,14 @@ def sonido_win(nombre):
 # _______________________________________________________________________
 # _______________________________________________________________________
 
-def eleccion_c():
-    from core.sound import sound
-    print("\n¿Deseas volver a jugar?")
-    print("1 = SI\n"
-        "2 = NON")
-    eleccion = int(input("\nEleccion: "))
+def volver_a_jugar(jugador, oponente):
+    
     while True:
         try:
+            eleccion = int(input("\nEleccion: "))
             if eleccion == 1:
-                R.Reset()
-                return True
+                R.Reset(jugador, oponente)
+                break
             elif eleccion == 2:
                 sound.sGameOver()
                 print("\n\033[33m**************** Terminando el programa. **************\033[0m\n")
@@ -168,13 +184,22 @@ def eleccion_c():
                     time.sleep(1)
                 raise SystemExit()
             else:
-                sound.sError()
-                os.system("cls")
-                print("Intente nuevamente")
-        except ValueError:
-            sound.sError()
-            os.system("cls")
-            print("Intente nuevamente")
+                error()
+        except ValueError as e:
+            valueError(e)
+        
 # _______________________________________________________________________
 #-------------------------------------------------------------------------
     
+def error():
+    sound.sError()
+    print("-------------------------------------")
+    print(f"{Color.ROJO}Acción no válida, por favor intente nuevamente{Color.RESET}")
+    time.sleep(1)
+
+def valueError(e):
+    sound.sError()
+    print(f"\n{Color.VERDE}ValueError: {e}{Color.RESET}")
+    print(f"{Color.ROJO}Valor inválido, ingresa nuevamente{Color.RESET}")
+    time.sleep(2)
+

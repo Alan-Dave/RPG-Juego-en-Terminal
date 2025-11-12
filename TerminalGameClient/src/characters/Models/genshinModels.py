@@ -5,62 +5,78 @@ class Genshin(Personaje):
         super().__init__(nombre, vida, poder, stamina, tipo)
 
 class Kazuha(Genshin):
-    def __init__(self, nombre):
-        super().__init__(nombre, vida=150, poder=200, stamina=300, tipo='Anemo')  # Kazuha es ágil y tiene alta stamina
+    def __init__(self):
+        super().__init__(nombre='Kazuha', vida=150, poder=200, stamina=300, tipo='Anemo')  # Kazuha es ágil y tiene alta stamina
 
-    def K_ulti(self):
+    def K_ulti(self, rival):
+        ataque = 'Kazuha ulti'
         if self.stamina < 130:
-            return {'ok': False, 'error': 'Sin stamina', 'ataque': 'Kazuha ulti'}
+            return {'ok': False, 'ataque': ataque, 'dano': 0, 'tipo': 'Anemo', 'msg': 'No tienes suficiente stamina'}
         
         self.stamina -= 30
         dano = self.poder // 2
+        tipo = 'Anemo'
+        rival.vida -= dano
         return {
             'ok': True,
-            'ataque': 'Kazuha ulti',
+            'ataque': ataque,
             'dano': dano,
-            'tipo': 'Anemo',
+            'tipo': tipo,
+            'msg': f'{self.nombre} ha realizado {ataque} y hace {dano} de daño a {rival.nombre}',
         }
 
 
-    def K_elemental(self):
+    def K_elemental(self, rival):
+        ataque = 'Kazuha elemental'
         if self.stamina < 130:
-            return {'ok': False, 'error': 'Sin stamina', 'ataque': 'Kazuha elemental'}
+            return {'ok': False, 'ataque': ataque, 'dano': 0, 'tipo': 'Anemo', 'msg': 'No tienes suficiente stamina'}
         
         self.stamina -= 30
         dano = self.poder // 2
+        tipo = 'Anemo'
+        rival.vida -= dano
         return {
             'ok': True,
-            'ataque': 'Kazuha elemental',
+            'ataque': ataque,
             'dano': dano,
-            'tipo': 'Anemo',
+            'tipo': tipo,
+            'msg': f'{self.nombre} ha realizado {ataque} y hace {dano} de daño a {rival.nombre}',
         }
 
 class Alhacen(Genshin):
-    def __init__(self, nombre):
-        super().__init__(nombre, vida=170, poder=210, stamina=280, tipo='Dendro')  # Alhacen es balanceado con buena stamina
+    def __init__(self):
+        super().__init__(nombre='Alhacen', vida=170, poder=210, stamina=280, tipo='Dendro')  # Alhacen es balanceado con buena stamina
     
-    def A_ulti(self):
+    def A_ulti(self, rival):
+        ataque = 'Alhacen ulti'
         if self.stamina < 130:
-            return {'ok': False, 'error': 'Sin stamina', 'ataque': 'Alhacen ulti'}
+            return {'ok': False, 'ataque': ataque, 'dano': 0, 'tipo': 'Dendro', 'msg': 'No tienes suficiente stamina'}
         
         self.stamina -= 30
         dano = self.poder // 2
+        tipo = 'Dendro'
+        rival.vida -= dano
         return {
             'ok': True,
-            'ataque': 'Alhacen ulti',
+            'ataque': ataque,
             'dano': dano,
-            'tipo': 'Dendro',
+            'tipo': tipo,
+            'msg': f'{self.nombre} ha realizado {ataque} y hace {dano} de daño a {rival.nombre}',
         }
         
-    def A_elemental(self):
+    def A_elemental(self, rival):
+        ataque = 'Alhacen elemental'
         if self.stamina < 130:
-            return {'ok': False, 'error': 'Sin stamina', 'ataque': 'Alhacen elemental'}
+            return {'ok': False, 'ataque': ataque, 'dano': 0, 'tipo': 'Dendro', 'msg': 'No tienes suficiente stamina'}
         
         self.stamina -= 30
         dano = self.poder // 2
+        tipo = 'Dendro'
+        rival.vida -= dano
         return {
             'ok': True,
-            'ataque': 'Alhacen elemental',
+            'ataque': ataque,
             'dano': dano,
-            'tipo': 'Dendro',
+            'tipo': tipo,
+            'msg': f'{self.nombre} ha realizado {ataque} y hace {dano} de daño a {rival.nombre}',
         }
