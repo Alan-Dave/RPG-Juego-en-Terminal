@@ -1,7 +1,6 @@
 from .BaseModel import Personaje
 from utils.common import random
-
-
+from utils.data import characters_list
 
 class Oponente(Personaje):
     def __init__(self, personaje):
@@ -19,14 +18,9 @@ class Oponente(Personaje):
 
     @staticmethod
     def crear_oponente(nombre_jugador):
-        from utils.commonChar import Naruto, Sasuke, Ichigo, Aizen, Kyo, Iori, Kazuha, Alhacen, Goku, Vegeta
         """Crea un oponente aleatorio distinto del jugador."""
         # Personaje base distinto al jugador
-        candidatos = [
-            Naruto(), Sasuke(), Ichigo(), Kyo(),
-            Iori(), Kazuha(), Alhacen(), Vegeta(),
-            Goku(), Aizen()
-        ]
+        candidatos = characters_list.copy()
         candidatos = [c for c in candidatos if c.nombre != nombre_jugador]
         personaje = random.choice(candidatos)
 

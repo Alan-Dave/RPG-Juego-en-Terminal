@@ -1,23 +1,26 @@
 from utils.common import time
 from utils.colors import Color
-from .eventos import error, valueError
+from .eventos import ERRORS
+from core import UI_MAP
 
-ERRORS = {
-    'ERROR': error,
-    'VALUEERROR': valueError,
-}
 
 def Juego():
     from core.eventos import R, resultado, volver_a_jugar
-    from ui.menuUI import bienvenida, volver_a_jugar_UI, eleccion_UI
-    from utils.commonChar import Oponente, Personaje
+    from ui.menu_ui import bienvenida, volver_a_jugar_UI, eleccion_UI
+    from characters.Models.BaseModel import Personaje
+    from characters.Models.oponenteModel import Oponente
     from core.eventos import resultado
     while True:
         bienvenida()
 
-        eleccion_UI()
-        # Elegir personaje
-        jugador = Personaje.elegir_Personaje()
+        while True:
+            eleccion_UI()
+            # Elegir personaje
+            jugador = Personaje.elegir_Personaje()
+            if jugador:
+                break
+
+
         # Crear un oponente distinto al jugador seleccionado
         oponente = Oponente.crear_oponente(jugador.nombre)
 
@@ -28,23 +31,28 @@ def Juego():
         MenuLogic(jugador, oponente, vida_maxima_j, vida_maxima_o)
 
         # Partida Terminada
-        resultado(jugador.nombre, oponente.nombre, jugador.vida, oponente.vida)
+        result = resultado(jugador.nombre, oponente.nombre, jugador.vida, oponente.vida)
 
         #Opcion de volver a jugar
         volver_a_jugar_UI()
-        volver_a_jugar(jugador, oponente)
+        volver_a_jugar(jugador, oponente, result)
     #_________________________________________________
 
 
 
 
 def MenuLogic(jugador, oponente, vida_maxima_j, vida_maxima_o):
-    from ui.menuUI import menu_UI
-    
+    from ui.menu_ui import menu_UI
+    c = None
     while True: 
         menu_UI(jugador, oponente, vida_maxima_j, vida_maxima_o)
         try:
-            accion = int(input("\nIntroduce el número de tu elección: "))
+            accion = input("\n Elige una opción: ").strip()  # <- deja como string
+
+            # si es un número, lo convertimos a int solo si es válido
+            if accion.isdigit():
+                accion = int(accion)
+
             match accion:
                 case 1: #JUGADOR ATACA Y OPONENTE ELIGE ACCIÓN
                     c = atacar_(jugador, oponente)     
@@ -54,10 +62,10 @@ def MenuLogic(jugador, oponente, vida_maxima_j, vida_maxima_o):
                     c = combos_(jugador, oponente)
                 case 8: #JUGADOR REALIZA UN ULTIMATE Y OPONENTE ELIGE ACCIÓN
                     c = especiales_(jugador, oponente)
-                case 't', 'T': #JUGADOR INGRESA A LA TIENDA
-                    c = tienda_(jugador)
-                case 'e', 'E': #JUGADOR INGRESA A SU MOCHILA
-                    c = mochila_(jugador)
+                case 't' | 'T': #JUGADOR INGRESA A LA TIENDA
+                    tienda_(jugador)
+                case 'e' | 'E': #JUGADOR INGRESA A SU MOCHILA
+                    mochila_(jugador)
                 case 7: #JUGADOR ESQUIVA Y OPONENTE ELIGE ACCIÓN
                     c = esquivar_(jugador, oponente)
                 case _:
@@ -99,14 +107,15 @@ def atacar_(jugador, oponente):
     resultado_ = oponente.elegir_accion(jugador, dano)
     ok_ = resultado_['ok']
     msg_ = resultado_['msg']
-    if ok_:
-        print(f'\n{Color.AMARILLO}{msg_}{Color.RESET}')
-        time.sleep(2)
-    else:
-        while True:
+    while True:
+        if ok_:
+            print(f'\n{Color.AMARILLO}{msg_}{Color.RESET}')
+            time.sleep(2)
+            break
+        else:
             print(f'\n{Color.ROJO}{msg_}{Color.RESET}')
             time.sleep(2)
-            oponente.elegir_accion(jugador)
+            oponente.elegir_accion(jugador, dano)
     
 
     c = comprobar(jugador, oponente)
@@ -142,14 +151,15 @@ def esperar_(jugador, oponente):
     resultado_ = oponente.elegir_accion(jugador, dano)
     ok_ = resultado_['ok']
     msg_ = resultado_['msg']
-    if ok_:
-        print(f'\n{Color.AMARILLO}{msg_}{Color.RESET}')
-        time.sleep(2)
-    else:
-        while True:
+    while True:
+        if ok_:
+            print(f'\n{Color.AMARILLO}{msg_}{Color.RESET}')
+            time.sleep(2)
+            break
+        else:
             print(f'\n{Color.ROJO}{msg_}{Color.RESET}')
             time.sleep(2)
-            oponente.elegir_accion(jugador)
+            oponente.elegir_accion(jugador, dano)
 
 
     c = comprobar(jugador, oponente)
@@ -183,14 +193,15 @@ def combos_(jugador, oponente):
     resultado_ = oponente.elegir_accion(jugador, dano)
     ok_ = resultado_['ok']
     msg_ = resultado_['msg']
-    if ok_:
-        print(f'\n{Color.AMARILLO}{msg_}{Color.RESET}')
-        time.sleep(2)
-    else:
-        while True:
+    while True:
+        if ok_:
+            print(f'\n{Color.AMARILLO}{msg_}{Color.RESET}')
+            time.sleep(2)
+            break
+        else:
             print(f'\n{Color.ROJO}{msg_}{Color.RESET}')
             time.sleep(2)
-            oponente.elegir_accion(jugador)
+            oponente.elegir_accion(jugador, dano)
 
 
     c = comprobar(jugador, oponente)
@@ -201,37 +212,53 @@ def combos_(jugador, oponente):
 
 
 def tienda_(jugador):
-    from TerminalGameClient.src.ui.tiendaUI import Tienda
-    Tienda()
+    from ui.tienda_ui import Tienda
+    from core.tienda_log import Tienda_log
+    UI_MAP['tienda']()
+    while True:
+        Tienda(jugador)
+        confirm = Tienda_log(jugador)
+        if confirm:
+            break
+
+
 
 
 
 def mochila_(jugador):
-    from TerminalGameClient.src.ui.mochilaUI import Mochila
-    Mochila()
+    from ui.mochila_ui import Mochila
+    from core.mochila_log import Mochila_log
+    UI_MAP['mochila']()
+    while True:
+        Mochila(jugador)
+        confirm = Mochila_log(jugador)
+        if confirm:
+            break
 
 
 
 def esquivar_(jugador, oponente):
-    print(f'{jugador.nombre} decide esquivar el ataque')
+    print(f'\n{Color.CIAN}{jugador.nombre} decide esquivar el ataque{Color.RESET}')
+    time.sleep(2)
+    dano = 0
 
     resultado_ = oponente.elegir_accion(jugador, dano)
     ok_ = resultado_['ok']
     msg_ = resultado_['msg']
     dano_ = resultado_['dano']
-    if ok_:
-        print(f'\n{Color.AMARILLO}{msg_}{Color.RESET}')
-        time.sleep(2)
-    else:
-        while True:
+    while True:
+        if ok_:
+            print(f'\n{Color.AMARILLO}{msg_}{Color.RESET}')
+            time.sleep(2)
+            break
+        else:
             print(f'\n{Color.ROJO}{msg_}{Color.RESET}')
             time.sleep(2)
-            oponente.elegir_accion(jugador)
+            oponente.elegir_accion(jugador, dano)
 
     resultado = jugador.esquivar(oponente, dano_)
     ok = resultado['ok']
     msg = resultado['msg']
-    dano = resultado['dano']
 
 
     c = comprobar(jugador, oponente)
@@ -241,6 +268,9 @@ def esquivar_(jugador, oponente):
     
     if ok:
         print(f"\n{Color.CIAN}{msg}{Color.RESET}")
+        time.sleep(2)
+    elif ok == None:
+        print(f"\n{Color.AMARILLO}{msg}{Color.RESET}")
         time.sleep(2)
     else:
         print(f'\n{Color.ROJO}{msg}{Color.RESET}')
@@ -280,14 +310,15 @@ def especiales_(jugador, oponente):
     resultado_ = oponente.elegir_accion(jugador, dano)
     ok_ = resultado_['ok']
     msg_ = resultado_['msg']
-    if ok_:
-        print(f'\n{Color.AMARILLO}{msg_}{Color.RESET}')
-        time.sleep(2)
-    else:
-        while True:
+    while True:
+        if ok_:
+            print(f'\n{Color.AMARILLO}{msg_}{Color.RESET}')
+            time.sleep(2)
+            break
+        else:
             print(f'\n{Color.ROJO}{msg_}{Color.RESET}')
             time.sleep(2)
-            oponente.elegir_accion(jugador)
+            oponente.elegir_accion(jugador, dano)
 
 
     c = comprobar(jugador, oponente)

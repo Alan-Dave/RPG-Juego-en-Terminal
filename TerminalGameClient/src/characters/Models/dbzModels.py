@@ -1,4 +1,5 @@
-from characters.Models.BaseModel import Personaje
+from .BaseModel import Personaje
+from core import SOUNDS_MAP
 
 class DBZ(Personaje):
     def __init__(self, nombre, vida, poder, stamina, tipo):
@@ -9,6 +10,7 @@ class Goku(DBZ):
         super().__init__(nombre='Goku', vida=250, poder=300, stamina=320, tipo='Saiyajin')  # Goku tiene estadísticas superiores en todo
 
     def Kamehameha(self, rival):
+        SOUNDS_MAP[self.nombre]['poder']()
         ataque = 'Kamehameha'
         if self.stamina < 130:
             return {
@@ -32,6 +34,7 @@ class Goku(DBZ):
         }
 
     def Ssj(self, rival):
+        SOUNDS_MAP[self.nombre]['ulti']()
         ataque = 'Super Saiyajin'
         if self.stamina < 150:
             return {
@@ -60,6 +63,7 @@ class Vegeta(DBZ):
         super().__init__(nombre='Vegeta', vida=240, poder=290, stamina=310, tipo='Saiyajin')  # Vegeta es similar a Goku, pero ligeramente más débil
     
     def Ssj(self, rival):
+        SOUNDS_MAP[self.nombre]['ulti']()
         ataque = 'Super Saiyajin'
         if self.stamina < 150:
             return {
@@ -85,6 +89,7 @@ class Vegeta(DBZ):
                 
 
     def GarlickGun(self, rival):
+        SOUNDS_MAP[self.nombre]['poder']()
         ataque = 'Garlick Gun'
         if self.stamina < 130:
             return {

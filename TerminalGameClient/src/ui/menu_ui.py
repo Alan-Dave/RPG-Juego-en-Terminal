@@ -1,6 +1,7 @@
 from utils.common import time, os
 from utils.colors import Color
-from core.sound_dispatcher import UI_MAP
+from core import UI_MAP
+
 
 def bienvenida():
     try:
@@ -37,7 +38,7 @@ def eleccion_UI():
 
 
 def menu_UI(jugador, oponente, vida_maxima_j, vida_maxima_o):
-    from utils.commonChar import Personaje
+    from characters.Models.BaseModel import Personaje
     MOVIMIENTOS = {
         "Naruto": {
             4: ("Rasengan", 60),

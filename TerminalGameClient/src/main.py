@@ -1,4 +1,4 @@
-from core.menuLogic import Juego
+from core.menu_log import Juego
 
 # ALL
 if __name__ == "__main__":

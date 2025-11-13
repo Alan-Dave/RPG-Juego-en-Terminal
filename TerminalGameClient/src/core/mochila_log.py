@@ -1,49 +1,33 @@
-from utils.common import os, time
-from core.sound import sound
+from utils.common import time
+from core import UI_MAP
+from core.eventos import ERRORS
 
-def Mochila():
-    from utils.constants import jugador
+def Mochila_log(jugador):
+    try:
+        usar = input("\n¿Que producto deseas usar? ").strip()
 
-    os.system("cls")
-    sound.sMochila()
-    print("\033[32m********** MOCHILA ***********\033[0m\n")
-    print(f"{len(jugador.mochila)}/10       Money: {jugador.moneda}\n")
-    print("-----------------------------------------------")
-    inventory()
-    print("-----------------------------------------------")
-    print("1. SI\n"
-          "2. NO")
-    
-    usar = int(input("\n¿Deseas usar un producto? "))
-    print("")
-    if usar == 1:
-        cual_usar = int(input("Elige el producto que deseas usar: "))
-        mochilaComprobator()
-        sound.sPocion()
-        print(f"Has usado \033[32m{jugador.mochila[cual_usar-1]}\033[0m")
+        if usar.lower() == 'r':
+            return True
+
+        if usar.isdigit():
+            usar = int(usar)
+        else:
+            print("\033[31mDebes ingresar un número válido.\033[0m")
+            return
+
+        mochilaComprobator(usar, jugador)
+        UI_MAP['pocion']()
+        print(f"Has usado \033[32m{jugador.mochila[usar-1]}\033[0m")  # <- Aquí dará error si ya hiciste pop
         time.sleep(2)
-        jugador.mochila.pop(cual_usar-1)
-        Mochila()
-    elif usar == 2:
-        return menu()
-    else:
-        sound.sError()
-        print("\033[31m Opcion Invalida \033[0m")
-        time.sleep(2)
-        return Mochila()
+
+    except ValueError as e:
+        ERRORS['VALUEERROR'](e)
 
 
 
 
-
-###
-# Un comprobador de pociones, para que detecte que pocion es la que tienes en cada slot
-
-###
-
-
-def mochilaComprobator(cual_usar):
-    from utils.constants import jugador, pocion
+def mochilaComprobator(cual_usar, jugador):
+    from utils.constants import pocion
 
     if not jugador.mochila:
         print("\033[31mTu mochila está vacía.\033[0m")
@@ -81,8 +65,9 @@ def mochilaComprobator(cual_usar):
 
         print(f"\n\033[32m {mensaje} \033[0m")
 
-        # Opcional: eliminar la poción usada
-        jugador.mochila.pop(cual_usar - 1)
+        nombre_item = jugador.mochila[cual_usar-1] if cual_usar-1 < len(jugador.mochila) else "Ítem usado"
+        print(f"Has usado \033[32m{nombre_item}\033[0m")
+
 
     else:
         print("\033[33mNo puedes usar este ítem.\033[0m")
@@ -90,9 +75,7 @@ def mochilaComprobator(cual_usar):
 
 
 
-def inventory():
-    from utils.constants import jugador
-
+def inventory(jugador):
     slots = 10
     mochila = jugador.mochila if jugador.mochila else []
 
@@ -102,6 +85,3 @@ def inventory():
     # Formato de dos columnas
     for i in range(5):
         print(f"{i+1}. {items[i]:<20} {i+6}. {items[i+5]}")
-
-
-

@@ -1,4 +1,8 @@
-from utils.common import time, random
+from utils.common import random
+from core import SOUNDS_MAP
+from core.eventos import ERRORS
+
+
 
 class Personaje:
     def __init__(self, nombre, vida, poder, stamina, tipo):
@@ -12,6 +16,7 @@ class Personaje:
         self.tipo = tipo
 
     def atacar(self, rival):
+        SOUNDS_MAP[self.nombre]['atacar']()
         ataque = 'ataque basico'
         tipo = 'basico'
 
@@ -36,8 +41,6 @@ class Personaje:
             'msg': f'{self.nombre} ha realizado un {ataque} y hace {self.dano} de daño a {rival.nombre}',
         }
     
-    
-
     def mostrar_estado(jugador, oponente, vida_maxima_j, vida_maxima_o):
         print("---------------------------------------------------------------")
         print(f"{jugador.nombre:^30} VS {oponente.nombre:^30}")
@@ -54,6 +57,7 @@ class Personaje:
 
 
     def esperar(self):
+        SOUNDS_MAP[self.nombre]['esperar']()
         self.stamina += 15
         self.vida += 15
 
@@ -66,10 +70,18 @@ class Personaje:
         }
 
     def esquivar(self, atacante, dano):
+        SOUNDS_MAP[self.nombre]['try_esquivar']()
         esquivo = random.choice(['esquivar', 'no_esquivar'])
 
         if dano <= 0:
-            return {'msg': f'{self.nombre} se desplaza y se prepara para el combate'}
+            return {
+                'ok': None,
+                'accion': 'esquivar',
+                'dano': 0,
+                'tipo': 'esquivar',
+                'msg': f'{self.nombre} se desplaza y se prepara para el combate'
+                }
+        
         if esquivo == 'esquivar':
             # Se esquiva el ataque, no pierde vida
             self.vida += dano
@@ -81,11 +93,12 @@ class Personaje:
                 'msg': f'{self.nombre} esquivó el ataque de {atacante.nombre}!',
             }
         else:
+            SOUNDS_MAP[self.nombre]['no_esquivar']()
             # Recibe daño reducido
             dano_recibido = dano / 1.5
             self.vida -= dano_recibido
             return {
-                'ok': True,
+                'ok': False,
                 'accion': 'esquivar',
                 'dano': dano_recibido,
                 'tipo': 'esquivar',
@@ -93,41 +106,41 @@ class Personaje:
             }
 
 
-
-
     def elegir_Personaje():
-        from utils.commonChar import (Naruto, Sasuke, Ichigo, Aizen, Goku, Vegeta, Alhacen, Kazuha, Iori, Kyo)
-        while True:
+        from utils.data import characters_list, characters_dict
+
+        try:
             eleccion = int(input("\nIntroduce el número de tu elección: "))
             match eleccion:
                 case 0:
-                    rndm = random.choice([
-                        Naruto(), Sasuke(), Ichigo(),
-                        Kyo(), Iori(), Kazuha(), Alhacen(), Vegeta(), Goku(), Aizen()
-                    ])
+                    rndm = random.choice(characters_list)
                     return rndm
                 case 1:
-                    return Naruto()
+                    return characters_dict['Naruto']
                 case 2:
-                    return Sasuke()
+                    return characters_dict['Sasuke']
                 case 3:
-                    return Iori()
+                    return characters_dict['Iori']
                 case 4:
-                    return Kyo()
+                    return characters_dict['Kyo']
                 case 5:
-                    return Ichigo()
+                    return characters_dict['Ichigo']
                 case 6:
-                    return Kazuha()
+                    return characters_dict['Kazuha']
                 case 7:
-                    return Vegeta()
+                    return characters_dict['Vegeta']
                 case 8:
-                    return Alhacen()
+                    return characters_dict['Alhacen']
                 case 9:
-                    return Goku()
+                    return characters_dict['Goku']
                 case 10:
-                    return Aizen()
+                    return characters_dict['Aizen']
                 case _:
-                    raise ValueError("Elección inválida. Por favor, elige un número válido.")   
+                    ERRORS['ERROR']()
+        except ValueError as e:
+            ERRORS['VALUEERROR'](e)
+
+
 
 def vida_barra(self, jugador, oponente, vida_maxima_j, vida_maxima_o):
         if self.nombre == jugador.nombre:

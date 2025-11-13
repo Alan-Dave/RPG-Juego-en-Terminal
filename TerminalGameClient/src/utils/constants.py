@@ -1,5 +1,3 @@
-from utils.common import random
-from utils.commonChar import (Naruto, Sasuke, Ichigo, Aizen, Goku, Vegeta, Alhacen, Kazuha, Iori, Kyo)
 
 class pocion():
     """

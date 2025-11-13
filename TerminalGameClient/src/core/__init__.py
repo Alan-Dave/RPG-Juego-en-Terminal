@@ -1,5 +1,6 @@
 from core.sound import sound
 
+
 SOUNDS_MAP = {
     # ==== Naruto Saga ====
     'Naruto': {
@@ -125,4 +126,9 @@ UI_MAP = {
     'salir_tienda': sound.sSalirTienda,
     'tienda': sound.sTienda,
     'win': sound.sWin,
+    'derrota': sound.sDerrota
 }
+
+
+
+

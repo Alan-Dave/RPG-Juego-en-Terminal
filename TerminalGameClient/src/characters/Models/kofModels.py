@@ -1,4 +1,5 @@
-from characters.Models.BaseModel import Personaje
+from .BaseModel import Personaje
+from core import SOUNDS_MAP
 
 class Kof(Personaje):
     def __init__(self, nombre, vida, poder, stamina, tipo):
@@ -9,6 +10,7 @@ class Iori(Kof):
         super().__init__(nombre='Iori', vida=160, poder=240, stamina=220, tipo='Fuego')
 
     def combo(self, rival):
+        SOUNDS_MAP[self.nombre]['poder']()
         ataque = 'Iori combo'
         if self.stamina < 30:
             return {'ok': False, 'ataque': ataque, 'dano': 0, 'tipo': 'Fuego', 'msg': 'No tienes suficiente stamina'}
@@ -26,6 +28,7 @@ class Iori(Kof):
         }
 
     def ulti(self, rival):
+        SOUNDS_MAP[self.nombre]['ulti']()
         ataque = 'Iori ulti'
         if self.stamina < 30:
             return {'ok': False, 'ataque': ataque, 'dano': 0, 'tipo': 'Fuego', 'msg': 'No tienes suficiente stamina'}
@@ -47,6 +50,7 @@ class Kyo(Kof):
         super().__init__(nombre='Kyo', vida=170, poder=230, stamina=210, tipo='Fuego')
     
     def ulti(self, rival):
+        SOUNDS_MAP[self.nombre]['ulti']()
         ataque = 'Kyo ulti'
         if self.stamina < 130:
             return {'ok': False, 'ataque': ataque, 'dano': 0, 'tipo': 'Fuego', 'msg': 'No tienes suficiente stamina'}
@@ -64,6 +68,7 @@ class Kyo(Kof):
         }
 
     def combo(self, rival):
+        SOUNDS_MAP[self.nombre]['poder']()
         ataque = 'Kyo combo'
         if self.stamina < 30:
             return {'ok': False, 'ataque': ataque, 'dano': 0, 'tipo': 'Fuego', 'msg': 'No tienes suficiente stamina'}

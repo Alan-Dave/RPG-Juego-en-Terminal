@@ -1,4 +1,5 @@
-from characters.Models.BaseModel import Personaje
+from .BaseModel import Personaje
+from core import SOUNDS_MAP
 
 class Bleach(Personaje):
     def __init__(self, nombre, vida, poder, stamina, tipo):
@@ -9,6 +10,7 @@ class Ichigo(Bleach):
         super().__init__(nombre='Ichigo', vida=180, poder=250, stamina=200, tipo='Segador')
 
     def getsuga(self, rival):
+        SOUNDS_MAP[self.nombre]['poder']()
         ataque = 'Getsuga Tensho'
         if self.stamina < 50:
             return {
@@ -32,6 +34,7 @@ class Ichigo(Bleach):
         }
 
     def bankai(self, rival):
+        SOUNDS_MAP[self.nombre]['ulti']()
         ataque = 'Bankai'
         if self.stamina < 150:
             return {
@@ -60,6 +63,7 @@ class Aizen(Bleach):
         super().__init__(nombre='Aizen', vida=200, poder=260, stamina=180, tipo='Segador')
 
     def kyokasuigetsu(self, rival):
+        SOUNDS_MAP[self.nombre]['poder']()
         ataque = 'Kyokasuigetsu'
         if self.stamina < 130:
             return {
@@ -83,6 +87,7 @@ class Aizen(Bleach):
         }
 
     def kido(self, rival):
+        SOUNDS_MAP[self.nombre]['ulti']()
         ataque = 'Kido Avanzado'
         if self.stamina < 130:
             return {

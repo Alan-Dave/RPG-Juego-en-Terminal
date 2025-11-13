@@ -1,7 +1,7 @@
 from utils.common import os, time
 from utils.colors import Color
 from core.sound import sound
-from .sound_dispatcher import SOUNDS_MAP
+from core import SOUNDS_MAP, UI_MAP
    
 # _______________________________________________________________________
 def combos(self, rival):
@@ -168,8 +168,12 @@ def sonido_win(nombre):
 # _______________________________________________________________________
 # _______________________________________________________________________
 
-def volver_a_jugar(jugador, oponente):
-    
+def volver_a_jugar(jugador, oponente, resultado):
+    if resultado:
+        UI_MAP['win']()
+    else:
+        UI_MAP['derrota']()
+
     while True:
         try:
             eleccion = int(input("\nEleccion: "))
@@ -192,14 +196,19 @@ def volver_a_jugar(jugador, oponente):
 #-------------------------------------------------------------------------
     
 def error():
-    sound.sError()
+    UI_MAP['error']()
     print("-------------------------------------")
     print(f"{Color.ROJO}Acción no válida, por favor intente nuevamente{Color.RESET}")
     time.sleep(1)
 
 def valueError(e):
-    sound.sError()
+    UI_MAP['error']()
     print(f"\n{Color.VERDE}ValueError: {e}{Color.RESET}")
     print(f"{Color.ROJO}Valor inválido, ingresa nuevamente{Color.RESET}")
     time.sleep(2)
 
+
+ERRORS = {
+    'ERROR': error,
+    'VALUEERROR': valueError,
+}
